@@ -7,7 +7,8 @@ function App() {
   const [location, setLocation] = useState('')
 
   const API_KEY = process.env.REACT_APP_WEATHER_KEY;
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${API_KEY}`
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=${API_KEY}`
+  const url2 = `api.openweathermap.org/data/2.5/forecast?q=${location}&units=metirc&appid=${API_KEY}`
 
   const searchLoaction = (event) => {
     if (event.key == 'Enter'){
@@ -25,36 +26,40 @@ function App() {
         <input 
         value={location}
         onChange={event => setLocation(event.target.value)}
-        onKeyPress={searchLoaction}
+        onKeyDown={searchLoaction}
         placeholder='지역을 입력해주세요.'
         type="text"/>
       </div>
       <div className="container">
         <div className="top">
           <div className="location">
-            <p>Seoul</p>
+            <p>{data.name}</p>
           </div>
           <div className="temp">
-            <h1>23.7°</h1>
+            {data.main ? <h1>{data.main.temp.toFixed()}°</h1> : null}
           </div>
           <div className="description">
-            <p>Clouds</p>
+            {data.weather ? <p>{data.weather[0].main}</p> : null}
           </div>
         </div>
-        <div className="bottom">
+
+        {data.name !== undefined &&
+          <div className="bottom">
           <div className="feels">
-            <p className="bold">26.4°</p>
+            {data.main ? <p className="bold">{data.main.feels_like.toFixed()}°</p> : null}
             <p>체감 온도</p>
           </div>
           <div className="humidity">
-            <p className="bold">91%</p>
+            {data.main ? <p className="bold">{data.main.humidity}%</p> : null}
             <p>습도</p>
           </div>
           <div className="wind">
-            <p className="bold">2.2m/s</p>
+            {data.wind ? <p className="bold">{data.wind.speed}m/s</p> : null}
             <p>풍속</p>
           </div>
         </div>
+        }
+        
       </div>
     </div>
   );
