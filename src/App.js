@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 
 function App() {
@@ -21,13 +20,16 @@ function App() {
         </div>
         <div className="bottom">
           <div className="feels">
-            <p>체감 온도 26.4°</p>
+            <p className="bold">26.4°</p>
+            <p>체감 온도</p>
           </div>
           <div className="humidity">
-            <p>습도 91%</p>
+            <p className="bold">91%</p>
+            <p>습도</p>
           </div>
           <div className="wind">
-            <p>풍속 2.2m/s</p>
+            <p className="bold">2.2m/s</p>
+            <p>풍속</p>
           </div>
         </div>
       </div>
