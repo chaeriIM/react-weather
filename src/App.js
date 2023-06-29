@@ -1,11 +1,34 @@
+import React, { useState } from 'react';
+import axios from 'axios';
 import './App.css';
 
 function App() {
-  // const API_KEY = process.env.REACT_APP_WEATHER_KEY;
-  // const url = `https://api.openweathermap.org/data/2.5/weather?q=Seoul&appid=${API_KEY}`
+  const [data, setData] = useState({})
+  const [location, setLocation] = useState('')
+
+  const API_KEY = process.env.REACT_APP_WEATHER_KEY;
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${API_KEY}`
+
+  const searchLoaction = (event) => {
+    if (event.key == 'Enter'){
+      axios.get(url).then((response) => {
+        setData(response.data)
+        console.log(response.data)
+      })
+      setLocation('')
+    }
+  }
 
   return (
     <div className="app">
+      <div className="search">
+        <input 
+        value={location}
+        onChange={event => setLocation(event.target.value)}
+        onKeyPress={searchLoaction}
+        placeholder='지역을 입력해주세요.'
+        type="text"/>
+      </div>
       <div className="container">
         <div className="top">
           <div className="location">
