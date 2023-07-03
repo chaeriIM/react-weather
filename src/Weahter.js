@@ -13,10 +13,21 @@ function Weather() {
     //검색
     const searchLoaction = (event) => {
         if (event.key === 'Enter'){
+            if(!/^[A-Za-z]+$/.test(location)){
+                alert('지역을 영어로 입력해주세요.');
+                return;
+            }
             axios.get(url).then((response) => {
                 setData(response.data)
                 console.log(response.data)
-        });
+            })
+            .catch((error) => {
+                if(error.response && error.response.status === 404) {
+                    alert('존재하지 않는 지역입니다.');
+                } else {
+                    alert('날씨 정보를 가져오는 중에 오류가 발생했습니다.');
+                }
+            });
         setLocation('')
         }
     }
