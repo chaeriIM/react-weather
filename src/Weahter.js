@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
 
@@ -9,6 +9,25 @@ function Weather() {
 
     const API_KEY = process.env.REACT_APP_WEATHER_KEY;
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=${API_KEY}&lang=kr`;
+
+    //현재 위치 날씨
+    useEffect(() => {
+        navigator.geolocation.getCurrentPosition(async(position) => {
+            const lat = position.coords.latitude; //위도
+            const lon = position.coords.longitude; //경도
+            console.log('위도 경도', lat, lon);
+            try{
+                const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}&lang=kr`;
+                const response = await axios.get(url);
+                setData(response.data);
+            } catch (error){
+                console.error(error);
+            }
+        }, (error) => {
+            console.error(error);
+        }
+        ); 
+    }, [API_KEY]);
 
     //검색
     const searchLoaction = (event) => {
@@ -31,32 +50,6 @@ function Weather() {
         setLocation('')
         }
     }
-    
-    // const getCurrentLocation = () => {
-    //   navigator.geolocation.getCurrentPosition((position) => {
-    //     let lat = position.coords.latitude; //위도
-    //     let lon = position.coords.longitude; //경도
-    //     console.log('위도 경도', lat, lon);
-    //   });
-    // };
-    // useEffect(() => {
-    //   getCurrentLocation();
-    // }, []);
-
-    // const getWeather = async(lat, lon) => {
-    //   navigator.geolocation.getCurrentPosition((position) => {
-    //     let lat = position.coords.latitude; //위도
-    //     let lon = position.coords.longitude; //경도
-    //     console.log('위도 경도', lat, lon);
-    //   });
-    //   let url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`
-    //   let response = await fetch(url)
-    //   let data = await response.json();
-    //   console.log('현재 날씨 데이터', data);
-    // }
-    // useEffect(() => {
-    //   getWeather();
-    // }, []);
 
     //{data.sys.country}
     return (
