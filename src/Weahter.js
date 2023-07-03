@@ -20,6 +20,7 @@ function Weather() {
                 const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}&lang=kr`;
                 const response = await axios.get(url);
                 setData(response.data);
+                console.log(response.data);
             } catch (error){
                 console.error(error);
             }
@@ -51,7 +52,6 @@ function Weather() {
         }
     }
 
-    //{data.sys.country}
     return (
         <div className="app">
         <div className="search">
@@ -65,14 +65,16 @@ function Weather() {
         <div className="container">
             <div className="top">
             <div className="location">
-                <p>{data.name}</p>
+                <p>{data.name} {data.sys && data.sys.country && `, ${data.sys.country}`}</p>
             </div>
             <div className="temp">
                 {data.main ? <h1>{data.main.temp.toFixed()}°</h1> : null}
             </div>
             <div className="description">
                 {data.weather ? <p>{data.weather[0].description}</p> : null}
-                {data.weather ? <p><img src={`https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`} /></p> : null}
+            </div>
+            <div className="icon">
+                {data.weather ? <p><img src={`https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`} alt="icon" /></p> : null}
             </div>
         </div>
 
