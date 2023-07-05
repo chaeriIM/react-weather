@@ -1,102 +1,139 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import "./App.css";
 
 function Weather() {
+  const [data, setData] = useState({});
+  const [location, setLocation] = useState("");
+  const [loading, setLoading] = useState(true);
 
-    const [data, setData] = useState({});
-    const [location, setLocation] = useState('');
+  const API_KEY = process.env.REACT_APP_WEATHER_KEY;
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=${API_KEY}&lang=kr`;
 
-    const API_KEY = process.env.REACT_APP_WEATHER_KEY;
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=${API_KEY}&lang=kr`;
-
-    //현재 위치 날씨
-    useEffect(() => {
-        navigator.geolocation.getCurrentPosition(async(position) => {
-            const lat = position.coords.latitude; //위도
-            const lon = position.coords.longitude; //경도
-            console.log('위도 경도', lat, lon);
-            try{
-                const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}&lang=kr`;
-                const response = await axios.get(url);
-                setData(response.data);
-                console.log(response.data);
-            } catch (error){
-                console.error(error);
-            }
-        }, (error) => {
-            console.error(error);
+  //현재 위치 날씨
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const lat = position.coords.latitude; //위도
+        const lon = position.coords.longitude; //경도
+        console.log("위도 경도", lat, lon);
+        try {
+          const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}&lang=kr`;
+          const response = await axios.get(url);
+          setData(response.data);
+          setLoading(false);
+          console.log(response.data);
+        } catch (error) {
+          console.error(error);
+          setLoading(false);
         }
-        ); 
-    }, [API_KEY]);
+      },
+      (error) => {
+        console.error(error);
+        setLoading(false);
+      }
+    );
+  }, [API_KEY]);
 
-    //검색
-    const searchLoaction = (event) => {
-        if (event.key === 'Enter'){
-            if(!/^[A-Za-z]+$/.test(location)){
-                alert('지역을 영어로 입력해주세요.');
-                return;
-            }
-            axios.get(url).then((response) => {
-                setData(response.data)
-                console.log(response.data)
-            })
-            .catch((error) => {
-                if(error.response && error.response.status === 404) {
-                    alert('존재하지 않는 지역입니다.');
-                } else {
-                    alert('날씨 정보를 가져오는 중에 오류가 발생했습니다.');
-                }
-            });
-        setLocation('')
-        }
+  //검색
+  const searchLoaction = (event) => {
+    if (event.key === "Enter") {
+      if (!/^[A-Za-z\s]+$/.test(location)) {
+        alert("지역을 영어로 입력해주세요.");
+        return;
+      }
+      axios
+        .get(url)
+        .then((response) => {
+          setData(response.data);
+          console.log(response.data);
+        })
+        .catch((error) => {
+          if (error.response && error.response.status === 404) {
+            alert("존재하지 않는 지역입니다.");
+          } else {
+            alert("날씨 정보를 가져오는 중에 오류가 발생했습니다.");
+          }
+        });
+      setLocation("");
     }
+  };
 
-    return (
-        <div className="app">
-        <div className="search">
-            <input 
-            value={location}
-            onChange={event => setLocation(event.target.value)}
-            onKeyDown={searchLoaction}
-            placeholder='지역을 입력해주세요.'
-            type="text"/>
-        </div>
+  return (
+    <div className="app">
+      <div className="search">
+        <input
+          value={location}
+          onChange={(event) => setLocation(event.target.value)}
+          onKeyDown={searchLoaction}
+          placeholder="지역을 입력해주세요."
+          type="text"
+        />
+      </div>
+
+      {loading ? (
+        <div className="loading">로딩중...</div>
+      ) : (
         <div className="container">
-            <div className="top">
+          <div className="top">
             <div className="location">
-                <p>{data.name} {data.sys && data.sys.country && `, ${data.sys.country}`}</p>
+              <p>
+                {data.name}{" "}
+                {data.sys && data.sys.country && `, ${data.sys.country}`}
+              </p>
             </div>
             <div className="temp">
-                {data.main ? <h1>{data.main.temp.toFixed()}°</h1> : null}
+              {data.main ? <h1>{data.main.temp.toFixed()}°</h1> : null}
             </div>
             <div className="description">
-                {data.weather ? <p>{data.weather[0].description}</p> : null}
+              {data.weather ? <p>{data.weather[0].description}</p> : null}
             </div>
             <div className="icon">
-                {data.weather ? <p><img src={`https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`} alt="icon" /></p> : null}
+              {data.weather ? (
+                <p>
+                  <img
+                    src={`https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`}
+                    alt="icon"
+                  />
+                </p>
+              ) : null}
             </div>
-        </div>
+          </div>
 
-        {data.name !== undefined &&
-        <div className="bottom">
-            <div className="feels">
-                {data.main ? <p className="bold">{data.main.feels_like.toFixed()}°</p> : null}
+          {data.name !== undefined && (
+            <div className="middle">
+              <p>옷 추천</p>
+              <br></br>
+              <p>이렇게 입으셔요</p>
+            </div>
+          )}
+
+          {data.name !== undefined && (
+            <div className="bottom">
+              <div className="feels">
+                {data.main ? (
+                  <p className="bold">{data.main.feels_like.toFixed()}°</p>
+                ) : null}
                 <p>체감 온도</p>
-            </div>
-            <div className="humidity">
-                {data.main ? <p className="bold">{data.main.humidity}%</p> : null}
+              </div>
+              <div className="humidity">
+                {data.main ? (
+                  <p className="bold">{data.main.humidity}%</p>
+                ) : null}
                 <p>습도</p>
-            </div>
-            <div className="wind">
-                {data.wind ? <p className="bold">{data.wind.speed}m/s</p> : null}
+              </div>
+              <div className="wind">
+                {data.wind ? (
+                  <p className="bold">{data.wind.speed}m/s</p>
+                ) : null}
                 <p>풍속</p>
+              </div>
             </div>
+          )}
         </div>
-        }
-        </div>
-        </div>
-    );
+      )}
+    </div>
+  );
 }
 
 export default Weather;
