@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./App.css";
+import locationIcon from "./assets/locationicon.png";
+import clothesIcon from "./assets/clothesicon.png";
 
 function Weather() {
   const [data, setData] = useState({});
@@ -59,6 +61,32 @@ function Weather() {
     }
   };
 
+  const handleLocationClick = () => {
+    window.location.reload(); //새로고침
+  };
+
+  //옷차림 추천
+  const clothesRecommendation = () => {
+    const temp = data.main.temp.toFixed();
+    if (temp > 27) {
+      return "민소매, 반팔, 반바지, 원피스";
+    } else if (22 < temp && temp < 28) {
+      return "반팔, 얇은 셔츠, 반바지, 면바지";
+    } else if (19 < temp && temp < 23) {
+      return "얇은 가디건, 긴팔, 면바지, 청바지";
+    } else if (16 < temp && temp < 20) {
+      return "얇은 니트, 맨투맨, 가디건, 청바지";
+    } else if (11 < temp && temp < 17) {
+      return "자켓, 가디건, 야상, 스타킹, 청바지, 면바지";
+    } else if (8 < temp && temp < 12) {
+      return "자켓, 트렌치코트, 야상, 니트, 청바지, 스타킹";
+    } else if (4 < temp && temp < 9) {
+      return "코트, 가죽자켓, 히트텍, 니트, 레깅스";
+    } else if (temp < 5) {
+      return "패딩, 두꺼운코트, 목도리, 기모제품";
+    }
+  };
+
   return (
     <div className="app">
       <div className="search">
@@ -76,7 +104,8 @@ function Weather() {
       ) : (
         <div className="container">
           <div className="top">
-            <div className="location">
+            <div className="location" onClick={handleLocationClick}>
+              <img src={locationIcon} alt="locationicon" />
               <p>
                 {data.name}{" "}
                 {data.sys && data.sys.country && `, ${data.sys.country}`}
@@ -102,9 +131,9 @@ function Weather() {
 
           {data.name !== undefined && (
             <div className="middle">
-              <p>옷 추천</p>
+              <img src={clothesIcon} alt="clothesIcon" />
               <br></br>
-              <p>이렇게 입으셔요</p>
+              <p>{clothesRecommendation()}</p>
             </div>
           )}
 
