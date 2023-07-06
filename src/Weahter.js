@@ -8,6 +8,7 @@ function Weather() {
   const [data, setData] = useState({});
   const [location, setLocation] = useState("");
   const [loading, setLoading] = useState(true);
+  const [background, setBackground] = useState("");
 
   const API_KEY = process.env.REACT_APP_WEATHER_KEY;
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=${API_KEY}&lang=kr`;
@@ -24,6 +25,7 @@ function Weather() {
           const response = await axios.get(url);
           setData(response.data);
           setLoading(false);
+          setBackground(backgroundClass(response.data.main.temp.toFixed()));
           console.log(response.data);
         } catch (error) {
           console.error(error);
@@ -48,6 +50,7 @@ function Weather() {
         .get(url)
         .then((response) => {
           setData(response.data);
+          setBackground(backgroundClass(response.data.main.temp.toFixed()));
           console.log(response.data);
         })
         .catch((error) => {
@@ -87,8 +90,17 @@ function Weather() {
     }
   };
 
+  //온도에 따른 배경
+  const backgroundClass = (temp) => {
+    if (temp >= 23) {
+      return 'hot';
+    } else {
+      return 'cold';
+    }
+  };
+
   return (
-    <div className="app">
+    <div className={`weather-container ${background}`}>
       <div className="search">
         <input
           value={location}
