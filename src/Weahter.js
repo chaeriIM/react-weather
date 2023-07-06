@@ -105,7 +105,7 @@ function Weather() {
         <div className="container">
           <div className="top">
             <div className="location" onClick={handleLocationClick}>
-              <img src={locationIcon} alt="locationicon" />
+              <img src={locationIcon} alt="locationicon" style={{width: "25px", height: "25px"}}/>
               <p>
                 {data.name}{" "}
                 {data.sys && data.sys.country && `, ${data.sys.country}`}
@@ -131,7 +131,7 @@ function Weather() {
 
           {data.name !== undefined && (
             <div className="middle">
-              <img src={clothesIcon} alt="clothesIcon" />
+              <img src={clothesIcon} alt="clothesIcon" style={{width: "25px", height: "25px"}}/>
               <br></br>
               <p>{clothesRecommendation()}</p>
             </div>
