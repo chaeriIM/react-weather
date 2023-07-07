@@ -3,6 +3,10 @@ import axios from "axios";
 import "./App.css";
 import locationIcon from "./assets/locationicon.png";
 import clothesIcon from "./assets/clothesicon.png";
+import humidityIcon from "./assets/humidityicon.png";
+import sunsetIcon from "./assets/sunseticon.png";
+import tempIcon from "./assets/tempicon.png";
+import windIcon from "./assets/windicon.png";
 
 function Weather() {
   const [data, setData] = useState({});
@@ -73,19 +77,19 @@ function Weather() {
     const temp = data.main.temp.toFixed();
     if (temp > 27) {
       return "민소매, 반팔, 반바지, 원피스";
-    } else if (22 < temp && temp < 28) {
+    } else if (22 < temp && temp <= 27) {
       return "반팔, 얇은 셔츠, 반바지, 면바지";
-    } else if (19 < temp && temp < 23) {
+    } else if (19 < temp && temp <= 22) {
       return "얇은 가디건, 긴팔, 면바지, 청바지";
-    } else if (16 < temp && temp < 20) {
+    } else if (16 < temp && temp <= 19) {
       return "얇은 니트, 맨투맨, 가디건, 청바지";
-    } else if (11 < temp && temp < 17) {
+    } else if (11 < temp && temp <= 16) {
       return "자켓, 가디건, 야상, 스타킹, 청바지, 면바지";
-    } else if (8 < temp && temp < 12) {
+    } else if (8 < temp && temp <= 11) {
       return "자켓, 트렌치코트, 야상, 니트, 청바지, 스타킹";
-    } else if (4 < temp && temp < 9) {
+    } else if (4 < temp && temp <= 8) {
       return "코트, 가죽자켓, 히트텍, 니트, 레깅스";
-    } else if (temp < 5) {
+    } else {
       return "패딩, 두꺼운코트, 목도리, 기모제품";
     }
   };
@@ -117,19 +121,19 @@ function Weather() {
         <div className="container">
           <div className="top">
             <div className="location" onClick={handleLocationClick}>
-              <img src={locationIcon} alt="locationicon" style={{width: "25px", height: "25px"}}/>
+              <img src={locationIcon} alt="locationicon"/>
               <p>
                 {data.name}{" "}
                 {data.sys && data.sys.country && `, ${data.sys.country}`}
               </p>
             </div>
             <div className="temp">
-              {data.main ? <h1>{data.main.temp.toFixed()}°</h1> : null}
+              <h1>{data.main.temp.toFixed()}°</h1>
             </div>
             <div className="description">
-              {data.weather ? <p>{data.weather[0].description}</p> : null}
+              <p>{data.weather[0].description}</p>
             </div>
-            <div className="icon">
+            <div className="weathericon">
               {data.weather ? (
                 <p>
                   <img
@@ -143,34 +147,37 @@ function Weather() {
 
           {data.name !== undefined && (
             <div className="middle">
-              <img src={clothesIcon} alt="clothesIcon" style={{width: "25px", height: "25px"}}/>
-              <br></br>
-              <p>{clothesRecommendation()}</p>
+              <div className="box">
+                <img src={tempIcon} alt="tempicon"/>
+                <p>체감 온도</p>
+                <p className="bold">{data.main.feels_like.toFixed()}°</p>
+              </div>
+              
+              <div className="box">
+                <img src={humidityIcon} alt="humidityicon"/>
+                <p>습도</p>
+                <p className="bold">{data.main.humidity}%</p>
+              </div>
+              <div className="box">
+                <img src={windIcon} alt="locationicon"/>
+                <p>풍속</p>
+                <p className="bold">{data.wind.speed}m/s</p>
+              </div>
+              <div className="box">
+                <img src={sunsetIcon} alt="sunseticon"/>
+                <p>일몰</p>
+                <p className="bold">{data.sys.sunset}</p>
+              </div>
             </div>
           )}
 
           {data.name !== undefined && (
             <div className="bottom">
-              <div className="feels">
-                {data.main ? (
-                  <p className="bold">{data.main.feels_like.toFixed()}°</p>
-                ) : null}
-                <p>체감 온도</p>
-              </div>
-              <div className="humidity">
-                {data.main ? (
-                  <p className="bold">{data.main.humidity}%</p>
-                ) : null}
-                <p>습도</p>
-              </div>
-              <div className="wind">
-                {data.wind ? (
-                  <p className="bold">{data.wind.speed}m/s</p>
-                ) : null}
-                <p>풍속</p>
-              </div>
+              <img src={clothesIcon} alt="clothesIcon"/>
+              <p>{clothesRecommendation()}</p>
             </div>
           )}
+          
         </div>
       )}
     </div>
