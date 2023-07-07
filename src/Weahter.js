@@ -103,6 +103,28 @@ function Weather() {
     }
   };
 
+  //unix 시간 변환 함수
+  function convertUnixTime(unixTime) {
+    const date = new Date(unixTime * 1000);
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    let period = "오전";
+
+    if(hours >= 12){
+      period = "오후";
+    }
+    if(hours > 12) {
+      hours -= 12;
+    }
+
+    minutes = minutes.toString().padStart(2, "0"); //ex)12:6 -> 12:06
+
+    const formattedTime = `${period} ${hours}:${minutes}`;
+    return formattedTime;
+  }
+  const sunsetTime = data.sys ? convertUnixTime(data.sys.sunset) : "";
+  const sunriseTime = data.sys ? convertUnixTime(data.sys.sunrise) : "";
+
   return (
     <div className={`weather-container ${background}`}>
       <div className="search">
@@ -123,8 +145,7 @@ function Weather() {
             <div className="location" onClick={handleLocationClick}>
               <img src={locationIcon} alt="locationicon"/>
               <p>
-                {data.name}{" "}
-                {data.sys && data.sys.country && `, ${data.sys.country}`}
+                {data.name}, {data.sys ? <span>{data.sys.country}</span> : null }
               </p>
             </div>
             <div className="temp">
@@ -166,7 +187,8 @@ function Weather() {
               <div className="box">
                 <img src={sunsetIcon} alt="sunseticon"/>
                 <p>일몰</p>
-                <p className="bold">{data.sys.sunset}</p>
+                <p className="bold">{sunsetTime}</p>
+                <span>일출: {sunriseTime}</span>
               </div>
             </div>
           )}

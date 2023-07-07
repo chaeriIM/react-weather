@@ -75,7 +75,7 @@ input {
   flex-direction: column;
   text-align: center;
   width: 46%;
-  height: 7rem;
+  height: 7.5rem;
   margin: 0.6rem auto;
   padding: 1rem;
   border-radius: 12px;
@@ -93,6 +93,10 @@ input {
 
 p.bold {
   font-size: 20px;
+}
+
+.box span {
+  font-size: 9px;
 }
 
 .bottom {
