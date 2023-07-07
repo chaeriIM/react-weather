@@ -76,19 +76,19 @@ function Weather() {
   const clothesRecommendation = () => {
     const temp = data.main.temp.toFixed();
     if (temp > 27) {
-      return "민소매, 반팔, 반바지, 원피스";
+      return "민소매, 반팔, 반바지, 원피스 추천 ⸝ဗီူ⸜";
     } else if (22 < temp && temp <= 27) {
-      return "반팔, 얇은 셔츠, 반바지, 면바지";
+      return "반팔, 얇은 셔츠, 반바지, 면바지 추천 ⸝ဗီူ⸜";
     } else if (19 < temp && temp <= 22) {
-      return "얇은 가디건, 긴팔, 면바지, 청바지";
+      return "얇은 가디건, 긴팔, 면바지, 청바지 추천 ⸝ဗီူ⸜";
     } else if (16 < temp && temp <= 19) {
-      return "얇은 니트, 맨투맨, 가디건, 청바지";
+      return "얇은 니트, 맨투맨, 가디건, 청바지 추천 ⸝ဗီူ⸜";
     } else if (11 < temp && temp <= 16) {
-      return "자켓, 가디건, 야상, 스타킹, 청바지, 면바지";
+      return "자켓, 가디건, 야상, 스타킹, 청바지, 면바지 추천 ⸝ဗီူ⸜";
     } else if (8 < temp && temp <= 11) {
-      return "자켓, 트렌치코트, 야상, 니트, 청바지, 스타킹";
+      return "자켓, 트렌치코트, 야상, 니트, 청바지, 스타킹 추천 ⸝ဗီူ⸜";
     } else if (4 < temp && temp <= 8) {
-      return "코트, 가죽자켓, 히트텍, 니트, 레깅스";
+      return "코트, 가죽자켓, 히트텍, 니트, 레깅스 추천 ⸝ဗီူ⸜";
     } else {
       return "패딩, 두꺼운코트, 목도리, 기모제품";
     }
