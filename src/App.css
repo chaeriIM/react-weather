@@ -141,7 +141,7 @@ p.bold {
   position: relative;
   background-color: rgba(0, 0, 0, 0.2);
   color: #fff;
-  overflow: auto;
+  overflow: hidden;
 }
 
 .weather-container::before {
