@@ -96,7 +96,7 @@ function Weather() {
 
   //온도에 따른 배경
   const backgroundClass = (temp) => {
-    if (temp >= 23) {
+    if (temp >= 22) {
       return 'hot';
     } else {
       return 'cold';
