@@ -1,4 +1,4 @@
-b# ⛅️ React-Weather
+# ⛅️ React-Weather
 > 날씨와 온도에 따른 옷차림 추천
 
 ### ◾️ DEMO
