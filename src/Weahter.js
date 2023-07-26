@@ -30,7 +30,7 @@ function Weather() {
           const response = await axios.get(url);
           setData(response.data);
           setLoading(false);
-          setBackground(backgroundClass(response.data.main.temp.toFixed()));
+          setBackground(backgroundClass(response.data.weather[0].main));
           console.log(response.data);
         } catch (error) {
           console.error(error);
@@ -55,7 +55,7 @@ function Weather() {
         .get(url)
         .then((response) => {
           setData(response.data);
-          setBackground(backgroundClass(response.data.main.temp.toFixed()));
+          setBackground(backgroundClass(response.data.weather[0].main));
           console.log(response.data);
         })
         .catch((error) => {
@@ -91,16 +91,27 @@ function Weather() {
     } else if (4 < temp && temp <= 8) {
       return "코트, 가죽자켓, 히트텍, 니트, 레깅스 추천 ⸝ဗီူ⸜";
     } else {
-      return "패딩, 두꺼운코트, 목도리, 기모제품";
+      return "패딩, 두꺼운코트, 목도리, 기모제품 ⸝ဗီူ⸜";
     }
   };
 
   //온도에 따른 배경
-  const backgroundClass = (temp) => {
-    if (temp >= 23) {
-      return 'hot';
-    } else {
-      return 'cold';
+  const backgroundClass = (weatherMain) => {
+    if (weatherMain === 'Thunderstorm') {
+      return 'thunderstorm';
+    } else if (weatherMain === 'Rain' || weatherMain === 'Drizzle') {
+      return 'rain';
+    } else if (weatherMain === 'Snow') {
+      return 'snow';
+    } else if (weatherMain === 'Dust' || weatherMain === 'Sand') {
+      return 'dust';
+    } else if (weatherMain === 'Mist' || weatherMain === 'Smoke' || weatherMain === 'Haze'
+              || weatherMain === 'Fog' || weatherMain === 'Ash' || weatherMain === 'Squall') {
+      return 'mist';
+    } else if (weatherMain === 'Clear') {
+      return 'clear';
+    } else if (weatherMain === 'Clouds') {
+      return 'clouds';
     }
   };
 
