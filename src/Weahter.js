@@ -7,6 +7,7 @@ import humidityIcon from "./assets/humidityicon.png";
 import sunsetIcon from "./assets/sunseticon.png";
 import tempIcon from "./assets/tempicon.png";
 import windIcon from "./assets/windicon.png";
+import weatherDescKo from './weatherDescKo';
 
 function Weather() {
   const [data, setData] = useState({});
@@ -15,7 +16,7 @@ function Weather() {
   const [background, setBackground] = useState("");
 
   const API_KEY = process.env.REACT_APP_WEATHER_KEY;
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=${API_KEY}&lang=kr`;
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=${API_KEY}`;
 
   //현재 위치 날씨
   useEffect(() => {
@@ -26,7 +27,7 @@ function Weather() {
         console.log("위도 경도", lat, lon);
         try {
           const API_KEY = process.env.REACT_APP_WEATHER_KEY;
-          const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}&lang=kr`;
+          const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`;
           const response = await axios.get(url);
           setData(response.data);
           setLoading(false);
@@ -137,6 +138,13 @@ function Weather() {
   const sunsetTime = data.sys ? convertUnixTime(data.sys.sunset) : "";
   const sunriseTime = data.sys ? convertUnixTime(data.sys.sunrise) : "";
 
+  //한글 설명
+  function getKoreanWeatherDescription() {
+    const code = data.weather[0].id
+    const descriptionObj = weatherDescKo.find((desc) => Object.keys(desc)[0] === String(code));
+    return descriptionObj ? Object.values(descriptionObj)[0] : '알 수 없는 날씨 상태';
+  }
+
   return (
     <div className={`weather-container ${background}`}>
       <div className="search">
@@ -164,7 +172,8 @@ function Weather() {
               <h1>{data.main.temp.toFixed()}°</h1>
             </div>
             <div className="description">
-              <p>{data.weather[0].description}</p>
+              {/* <p>{data.weather[0].description}</p> */}
+              <p>{getKoreanWeatherDescription()}</p>
             </div>
             <div className="weathericon">
               {data.weather ? (
